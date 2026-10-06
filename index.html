@@ -93,7 +93,7 @@ button:disabled {
 <body>
 
 <div class="top">
-    <span class="version-badge">Versie: v8</span>
+    <span class="version-badge">Versie: v9</span>
     <h1>🌍 GeoGuessr Quiz</h1>
     <p id="roundText">Ronde 1 — kies jouw locatie</p>
 </div>
@@ -120,8 +120,8 @@ const ROUND = 1;
 
 // ============================================================
 
-// Kaart initialisatie
-const map = L.map('map').setView([20, 0], 2);
+// Kaart initialiseren ingezoomd op Nederland (Centrum coördinaten + zoomniveau 7)
+const map = L.map('map').setView([52.1326, 5.2913], 7);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -151,7 +151,7 @@ map.on("click", function(e) {
     }
 
     document.getElementById("selected").textContent =
-        "📍 Locatie gekozen! Je kunt de pin nog verplaatsen.";
+        "📍 Locatie gekozen! Je kunt je pin nog verplaatsen.";
 
     checkFormReady();
 });
@@ -182,7 +182,7 @@ document.getElementById("send").addEventListener("click", function() {
         return;
     }
 
-    // Coördinaten omzetten met een komma in plaats van een punt voor Excel
+    // Coördinaten met komma voor Excel
     const lat = answer.lat.toFixed(6).replace('.', ',');
     const lon = answer.lon.toFixed(6).replace('.', ',');
 
