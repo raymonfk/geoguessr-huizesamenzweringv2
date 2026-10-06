@@ -192,4 +192,12 @@ document.getElementById("send").addEventListener("click", function() {
         "Longitude: " + lon;
 
     const url =
-        "https://wa.me/" + ORGANIZER_WHATSAPP
+        "https://wa.me/" + ORGANIZER_WHATSAPP +
+        "?text=" + encodeURIComponent(message);
+
+    window.location.href = url;
+});
+</script>
+
+</body>
+</html>
