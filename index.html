@@ -112,15 +112,23 @@ const ROUND = 1;
 
 // ============================================================
 
-// Kaart initialiseren met wereldzicht
-const map = L.map('map').setView([20, 0], 2);
+// Kaart initialiseren met strenge grenzen zodat hij niet herhaalt
+const map = L.map('map', {
+    minZoom: 2,
+    maxZoom: 18,
+    maxBounds: [
+        [-85, -180],
+        [85, 180]
+    ],
+    maxBoundsViscosity: 1.0
+}).setView([20, 0], 2);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    noWrap: true, // Voorkomt dat de wereld meerdere keren naast elkaar verschijnt
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Zorg dat de kaart direct goed laadt (voorkomt grijze tegels)
+// Zorg dat de kaart direct correct wordt getoond
 setTimeout(function() {
     map.invalidateSize();
 }, 200);
@@ -149,7 +157,6 @@ map.on("click", function(e) {
     checkFormReady();
 });
 
-// Controleer of zowel naam als locatie zijn ingevuld om de knop te activeren
 document.getElementById("name").addEventListener("input", checkFormReady);
 
 function checkFormReady() {
@@ -177,7 +184,7 @@ document.getElementById("send").addEventListener("click", function() {
     }
 
     if (ORGANIZER_WHATSAPP === "VUL_HIER_JOUW_NUMMER_IN" || !ORGANIZER_WHATSAPP) {
-        alert("De organisator moet eerst het WhatsApp-nummer in de code invullen.");
+        alert("De organisator moet het WhatsApp-nummer in de code invullen.");
         return;
     }
 
