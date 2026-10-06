@@ -93,7 +93,7 @@ button:disabled {
 <body>
 
 <div class="top">
-    <span class="version-badge">Versie: v7</span>
+    <span class="version-badge">Versie: v8</span>
     <h1>🌍 GeoGuessr Quiz</h1>
     <p id="roundText">Ronde 1 — kies jouw locatie</p>
 </div>
@@ -182,8 +182,9 @@ document.getElementById("send").addEventListener("click", function() {
         return;
     }
 
-    const lat = answer.lat.toFixed(6);
-    const lon = answer.lon.toFixed(6);
+    // Coördinaten omzetten met een komma in plaats van een punt voor Excel
+    const lat = answer.lat.toFixed(6).replace('.', ',');
+    const lon = answer.lon.toFixed(6).replace('.', ',');
 
     const message =
         "🌍 GeoGuessr antwoord\n" +
@@ -192,7 +193,6 @@ document.getElementById("send").addEventListener("click", function() {
         "Latitude: " + lat + "\n" +
         "Longitude: " + lon;
 
-    // Geen telefoonnummer in de link; WhatsApp vraagt de speler zelf om een contact te kiezen
     const url = "https://wa.me/?text=" + encodeURIComponent(message);
 
     window.location.href = url;
