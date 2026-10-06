@@ -27,8 +27,8 @@ body {
 
 #map {
     width: 100%;
-    height: 65vh;
-    min-height: 400px;
+    height: 55vh;
+    min-height: 350px;
 }
 
 .panel {
@@ -44,6 +44,10 @@ input {
     color: white;
     font-size: 16px;
     margin-bottom: 9px;
+    outline: none;
+}
+input:focus {
+    border-color: #22c55e;
 }
 button {
     width: 100%;
@@ -54,9 +58,11 @@ button {
     font-weight: bold;
     background: #22c55e;
     color: white;
+    cursor: pointer;
 }
 button:disabled {
     background: #475569;
+    cursor: not-allowed;
 }
 #selected {
     text-align: center;
@@ -98,22 +104,26 @@ button:disabled {
 // INSTELLINGEN
 // ============================================================
 
-// Vul hier jouw WhatsApp-nummer in.
-// Gebruik landcode zonder + of spaties.
-// Nederland bijvoorbeeld: 31612345678
-const ORGANIZER_WHATSAPP = "VUL_HIER_JOUW_NUMMER_IN";
+// Vul hier jouw WhatsApp-nummer in (bijv. 31612345678)
+const ORGANIZER_WHATSAPP = "31612345678"; 
 
-// Pas per ronde alleen dit getal aan.
+// Pas per ronde dit getal aan
 const ROUND = 1;
 
 // ============================================================
 
+// Kaart initialiseren met wereldzicht
 const map = L.map('map').setView([20, 0], 2);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
+
+// Zorg dat de kaart direct goed laadt (voorkomt grijze tegels)
+setTimeout(function() {
+    map.invalidateSize();
+}, 200);
 
 let marker = null;
 let answer = null;
@@ -134,10 +144,24 @@ map.on("click", function(e) {
     }
 
     document.getElementById("selected").textContent =
-        "📍 Locatie gekozen — je kunt de pin nog verplaatsen";
+        "📍 Locatie gekozen! Je kunt de pin nog verplaatsen.";
 
-    document.getElementById("send").disabled = false;
+    checkFormReady();
 });
+
+// Controleer of zowel naam als locatie zijn ingevuld om de knop te activeren
+document.getElementById("name").addEventListener("input", checkFormReady);
+
+function checkFormReady() {
+    const name = document.getElementById("name").value.trim();
+    const sendBtn = document.getElementById("send");
+    
+    if (name && answer) {
+        sendBtn.disabled = false;
+    } else {
+        sendBtn.disabled = true;
+    }
+}
 
 document.getElementById("send").addEventListener("click", function() {
     const name = document.getElementById("name").value.trim();
@@ -152,8 +176,8 @@ document.getElementById("send").addEventListener("click", function() {
         return;
     }
 
-    if (ORGANIZER_WHATSAPP === "VUL_HIER_JOUW_NUMMER_IN") {
-        alert("De organisator moet eerst het WhatsApp-nummer in het bestand invullen.");
+    if (ORGANIZER_WHATSAPP === "VUL_HIER_JOUW_NUMMER_IN" || !ORGANIZER_WHATSAPP) {
+        alert("De organisator moet eerst het WhatsApp-nummer in de code invullen.");
         return;
     }
 
@@ -168,12 +192,4 @@ document.getElementById("send").addEventListener("click", function() {
         "Longitude: " + lon;
 
     const url =
-        "https://wa.me/" + ORGANIZER_WHATSAPP +
-        "?text=" + encodeURIComponent(message);
-
-    window.location.href = url;
-});
-</script>
-
-</body>
-</html>
+        "https://wa.me/" + ORGANIZER_WHATSAPP
