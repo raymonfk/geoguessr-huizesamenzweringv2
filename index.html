@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GeoGuessr Vriendenquiz</title>
 
-<link rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIINfQ3M0w5J5xZp5dY5rYQ5v0JQY8YfQw="
-      crossorigin=""/>
+<!-- Leaflet CSS zonder blokkerende beveiligingshashes -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 * { box-sizing: border-box; }
@@ -39,7 +37,6 @@ body {
     border-radius: 6px;
 }
 
-/* Vaste hoogte zodat de kaart altijd zichtbaar is */
 #map {
     width: 100%;
     height: 400px;
@@ -96,7 +93,7 @@ button:disabled {
 <body>
 
 <div class="top">
-    <span class="version-badge">Versie: v5</span>
+    <span class="version-badge">Versie: v6</span>
     <h1>🌍 GeoGuessr Quiz</h1>
     <p id="roundText">Ronde 1 — kies jouw locatie</p>
 </div>
@@ -110,9 +107,8 @@ button:disabled {
     <div class="help">Je kunt je pin verplaatsen door opnieuw op de kaart te tikken.</div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
+<!-- Leaflet JS zonder blokkerende beveiligingshashes -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 // ============================================================
@@ -127,27 +123,15 @@ const ROUND = 1;
 
 // ============================================================
 
-// Kaart instellen
-const map = L.map('map', {
-    minZoom: 2,
-    maxZoom: 18,
-    maxBounds: [
-        [-85, -180],
-        [85, 180]
-    ],
-    maxBoundsViscosity: 1.0
-}).setView([20, 0], 2);
+// Schone kaart initialisatie
+const map = L.map('map').setView([20, 0], 2);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    noWrap: true,
-    bounds: [
-        [-85, -180],
-        [85, 180]
-    ],
+    maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Direct hertekenen bij opstarten
+// Zorg dat de kaart goed tekent als het laadt
 setTimeout(function() {
     map.invalidateSize();
 }, 200);
