@@ -26,7 +26,7 @@ body {
 .top h1 { margin: 0; font-size: 22px; }
 .top p { margin: 5px 0 0; color: #cbd5e1; font-size: 14px; }
 
-/* Versie indicator zodat je direct ziet of de nieuwe code laadt */
+/* Versie indicator */
 .version-badge {
     position: absolute;
     top: 10px;
@@ -96,7 +96,7 @@ button:disabled {
 <body>
 
 <div class="top">
-    <span class="version-badge">Versie: v3</span>
+    <span class="version-badge">Versie: v4</span>
     <h1>🌍 GeoGuessr Quiz</h1>
     <p id="roundText">Ronde 1 — kies jouw locatie</p>
 </div>
@@ -127,7 +127,7 @@ const ROUND = 1;
 
 // ============================================================
 
-// Kaart instellen met harde begrenzing zodat de wereld niet herhaalt
+// Kaart instellen
 const map = L.map('map', {
     minZoom: 2,
     maxZoom: 18,
@@ -139,7 +139,7 @@ const map = L.map('map', {
 }).setView([20, 0], 2);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    noWrap: true, // Zorgt ervoor dat de kaart niet oneindig naast elkaar plakt
+    noWrap: true,
     bounds: [
         [-85, -180],
         [85, 180]
@@ -189,7 +189,7 @@ function checkFormReady() {
     }
 }
 
-document.getElementById("send").addEventListener("click", function`() {
+document.getElementById("send").addEventListener("click", function() {
     const name = document.getElementById("name").value.trim();
 
     if (!name) {
