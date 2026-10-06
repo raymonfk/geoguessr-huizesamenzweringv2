@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GeoGuessr Vriendenquiz</title>
 
-<!-- Leaflet CSS zonder blokkerende beveiligingshashes -->
+<!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
@@ -93,7 +93,7 @@ button:disabled {
 <body>
 
 <div class="top">
-    <span class="version-badge">Versie: v6</span>
+    <span class="version-badge">Versie: v7</span>
     <h1>🌍 GeoGuessr Quiz</h1>
     <p id="roundText">Ronde 1 — kies jouw locatie</p>
 </div>
@@ -107,7 +107,7 @@ button:disabled {
     <div class="help">Je kunt je pin verplaatsen door opnieuw op de kaart te tikken.</div>
 </div>
 
-<!-- Leaflet JS zonder blokkerende beveiligingshashes -->
+<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
@@ -115,15 +115,12 @@ button:disabled {
 // INSTELLINGEN
 // ============================================================
 
-// Vul hier jouw WhatsApp-nummer in (bijv. 31612345678)
-const ORGANIZER_WHATSAPP = "31612345678"; 
-
 // Pas per ronde dit getal aan
 const ROUND = 1;
 
 // ============================================================
 
-// Schone kaart initialisatie
+// Kaart initialisatie
 const map = L.map('map').setView([20, 0], 2);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -131,7 +128,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Zorg dat de kaart goed tekent als het laadt
 setTimeout(function() {
     map.invalidateSize();
 }, 200);
@@ -186,11 +182,6 @@ document.getElementById("send").addEventListener("click", function() {
         return;
     }
 
-    if (ORGANIZER_WHATSAPP === "VUL_HIER_JOUW_NUMMER_IN" || !ORGANIZER_WHATSAPP) {
-        alert("De organisator moet het WhatsApp-nummer in de code invullen.");
-        return;
-    }
-
     const lat = answer.lat.toFixed(6);
     const lon = answer.lon.toFixed(6);
 
@@ -201,9 +192,8 @@ document.getElementById("send").addEventListener("click", function() {
         "Latitude: " + lat + "\n" +
         "Longitude: " + lon;
 
-    const url =
-        "https://wa.me/" + ORGANIZER_WHATSAPP +
-        "?text=" + encodeURIComponent(message);
+    // Geen telefoonnummer in de link; WhatsApp vraagt de speler zelf om een contact te kiezen
+    const url = "https://wa.me/?text=" + encodeURIComponent(message);
 
     window.location.href = url;
 });
